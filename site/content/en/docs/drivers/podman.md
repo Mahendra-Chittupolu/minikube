@@ -34,6 +34,15 @@ Be sure this text is *after* `#includedir /etc/sudoers.d`. To confirm it worked,
 sudo -k -n podman version
 ```
 
+- On Linux, the rootless podman driver requires subordinate UIDs and GIDs to be configured for your user, otherwise `minikube start` fails. Configure them as described in the [podman rootless tutorial](https://github.com/podman-container-tools/podman/blob/main/docs/tutorials/rootless_tutorial.md#etcsubuid-and-etcsubgid-configuration):
+
+```shell
+sudo usermod --add-subuids 100000-165535 --add-subgids 100000-165535 $USER
+podman system migrate
+```
+
+Log out and back in afterwards so the new subuid/subgid mappings take effect.
+
 - On all other operating systems, make sure to create and start the virtual machine that is needed for Podman.
 
 ```shell
